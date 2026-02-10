@@ -1,0 +1,11 @@
+token.json
+credentials.json
+.env
+emails.db
+rules.json
+__pycache__/
+.venv/
+.mypy_cache/
+.pytest_cache/
+*.pyc
+reports/

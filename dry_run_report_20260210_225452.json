@@ -1,0 +1,452 @@
+[
+    {
+        "id": "19c47335ebec2acc",
+        "snippet": "⚠️ The attached file has a display error. ✅ Click here for the fixed post:… ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
+        "sender": "LinkedIn <updates-noreply@linkedin.com>",
+        "subject": "Jaden Jaebum Park님 등 여러 사람들이 LinkedIn에서 의견을 나눔",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c4677f4c70cb91",
+        "snippet": "쿠팡홈으로가기 이*주님 쿠팡에서 주문하신 구매내역을 안내해드립니다. (쿠폰번호 SMS 전송 및 배송상태 확인은 마이쿠팡에서 가능합니다) 닥터유 다이제 초코, 225g, 3개 구매 상세내역 쿠팡가 수량 구매금액 배송정보 판매자 닥터유 다이제 초코, 225g, 3개 6600원 1 6600원 주문배송조회 쿠팡(주) 주문금액 6600원 할인금액 -660원 결제금액",
+        "sender": "\"쿠팡\" <noreply@e.coupang.com>",
+        "subject": "[쿠팡] 이*주님 주문하신 내역을 확인해주세요.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c46756cdde32ce",
+        "snippet": "오전근무 주원이네님이 2026. 2. 11. (수요일)에 열리는 오전근무 일정에 나를 초대했습니다. 예정된 일정이 있습니다. 오전근무 2026. 2. 11. (수요일) 주최자 주원이네 savior714@gmail.com 참석자 모든 일정 세부정보 보기 Google Calendar에서 보낸 초대장 캘린더 알림을 수신 허용했으므로 전송된 이메일입니다. 더 이상",
+        "sender": "Google Calendar <calendar-notification@google.com>",
+        "subject": "알림: 오전근무 - 2026. 2. 11. (수) (savior714@gmail.com)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c462d0ddf20a22",
+        "snippet": "[대한소아청소년과학회] 학회 맞춤형 연구윤리 교육과정 수강신청 안내(3월 10일) 안녕하세요. 대한소아청소년과학회입니다. &quot; 학회(대한소아청소년과학회) 맞춤형 연구윤리 교육과정&quot; 관련하여 아래의 일정으로 교육이 진행될 예정이오니, 많은 참여를 요청드립니다. * 교육일정 : 2026. 3. 10.(화) / 14:00~15:30(90분) (출석",
+        "sender": "\"대한소아청소년과학회\" <pediatrics@pediatrics.or.kr>",
+        "subject": "[대한소아청소년과학회] 학회 맞춤형 연구윤리 교육과정 수강신청 안내(3월 10일)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c462ae2b46cc73",
+        "snippet": "안녕하세요, 대한소아감염학회 회원 여러분, 2026년도 해외학술대회 후원 수요조사 이후, 추가로 지원 가능한 학회 (Options XIII)에 대한 안내 및 수요 조사를 진행하고자 합니다. 2026 일정 장소 초록오픈 초록마감 사이트 Options XIII 2026.8.30-2026.9.2 Washington DC 2026.01.05 2026.04.10",
+        "sender": "\"대한소아감염학회\" <kspid@kspid.or.kr>",
+        "subject": "2026년도 해외학술대회 후원 추가 수요조사 안내 (Options XIII)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c45c0e7d860627",
+        "snippet": "hongskin 님, hyunkyung_17 님 외 여러 명이 새로운 게시물을 올렸습니다. Instagram 에서 소식을 확인해보세요 hongskin님, hyunkyung_17님 외 여러 명이 새로운 게시물을 올렸습니다. Instagram 열기 1 아직 확인하지 않은 알림 1개가 있습니다. savior714@gmail.com 주소로 전송된 메시지입니다.",
+        "sender": "hongskin on Instagram <notification@priority.instagram.com>",
+        "subject": "savior714님, 놓친 순간들을 확인해보세요",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c45a342c6ae0a0",
+        "snippet": "쿠팡홈으로가기 이*주님 쿠팡에서 주문하신 구매내역을 안내해드립니다. (쿠폰번호 SMS 전송 및 배송상태 확인은 마이쿠팡에서 가능합니다) 가드데이 KF94 새부리형 황사방역 컬러 마스크 대형, 블랙, 1개, 100매입 구매 상세내역 쿠팡가 수량 구매금액 배송정보 판매자 가드데이 KF94 새부리형 황사방역 컬러 마스크 대형, 블랙, 1개, 100매입 7900원",
+        "sender": "\"쿠팡\" <noreply@e.coupang.com>",
+        "subject": "[쿠팡] 이*주님 주문하신 내역을 확인해주세요.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c4573777a38b2a",
+        "snippet": "N Pay 구매하신 상품의 구매확정처리 부탁드립니다. 상품을 받으신 후 만족하셨다면 구매확정을 부탁드립니다. 아래 기한까지 구매확정을 하지 않으실 경우, 이후 자동으로 구매가 확정될 예정입니다. 만일, 구매확정기한 내 정상적으로 상품을 수령하지 못하신 경우에는 판매자문의 또는 구매확정 연장을 해주세요. 고객명 이*주님 주문번호 2026020631644131",
+        "sender": "\"네이버페이\" <naverpayadmin_noreply@navercorp.com>",
+        "subject": "[네이버페이] 구매하신 제품을 무사히 받으셨다면, 구매를 확정 부탁드립니다.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c455d901115e01",
+        "snippet": "",
+        "sender": "SK Telecom <bbsmaster@sktelecom.com>",
+        "subject": "SK Telecom 2026년 2월 요금안내서(010-50**-40**,6133708721,이**주)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c45521a7ea754d",
+        "snippet": "N Pay 네이버페이로 결제하신 내역입니다. 고객명 이*주님 결제번호 20260210NP7025318556 결제일자 2026.02.10 결제처 Greenschool 상품정보 김서원|202602|10084963|154253 결제상세 카드 간편결제 24000원 주문금액 24000 원 주문상품 김서원|202602|10084963|154253 상품금액 24000원",
+        "sender": "\"네이버페이\" <naverpayadmin_noreply@navercorp.com>",
+        "subject": "[네이버페이] 결제하신 내역을 안내해드립니다.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c4506827204962",
+        "snippet": "대규모 영상 보안 운영, Synology로 단순화하세요 이미 설치된 카메라, 그대로 Synology에 활용하세요 Synology Surveillance Station은 특정 제조사에 종속되지 않는 영상 보안 감시 플랫폼입니다. 현재 사용 중인 카메라를 교체할 필요 없이, 다양한 브랜드와 모델을 하나의 시스템에서 통합 관리할 수 있습니다. 전문가에게",
+        "sender": "Synology Marketing <noreply@news.synology.com>",
+        "subject": "🔐 혼합 카메라 환경도 문제없는 Synology Surveillance Station",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c44d23d0e15fdd",
+        "snippet": "Steam 찜 목록에 있는 게임 1개가 할인 중입니다! V Rising -50% ₩ 34500 ₩ 17250 특별 할인! 종료일: 2026년 2월 17일 3:00am KST 뱀파이어로서 깨어나 인근 거주지에서 피 사냥을 통해 힘을 회복합니다. 치명적인 뜨거운 햇빛을 피하고 자신만의 성채를 건설하고 끊임없이 변화하는 신비로운 오픈 세계에서 발전합시다. 온라인",
+        "sender": "Steam <noreply@steampowered.com>",
+        "subject": "Steam 찜 목록에 있는 V Rising 제품이 지금 할인 중입니다!",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c44ccdabc5528c",
+        "snippet": "쿠팡홈으로가기 이*주님 쿠팡에서 주문하신 구매내역을 안내해드립니다. (쿠폰번호 SMS 전송 및 배송상태 확인은 마이쿠팡에서 가능합니다) 스너글스 스너그핏 팬티형 기저귀 남여공용, 점보형(2XL), 96매 구매 상세내역 쿠팡가 수량 구매금액 배송정보 판매자 스너글스 스너그핏 팬티형 기저귀 남여공용, 점보형(2XL), 96매 33990원 1 33990원 주문배송",
+        "sender": "\"쿠팡\" <noreply@e.coupang.com>",
+        "subject": "[쿠팡] 이*주님 주문하신 내역을 확인해주세요.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c4496cebedad75",
+        "snippet": "Significant improvements to Cursor&#39;s agentic coding model. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
+        "sender": "Cursor Team <team@mail.cursor.com>",
+        "subject": "New in Cursor: Composer 1.5",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c441ec4a445341",
+        "snippet": "Dr Seungju Lee - February 9, 2026 - Articles published today from the topics and columnists you&#39;re following February 9, 2026 Medscape My Alert Customized Alert for Dr Seungju Lee – February 9,",
+        "sender": "Medscape Topic Alert <topic_alert@email.medscape.com>",
+        "subject": "Autism May Not Be a Male-Dominated Disorder",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c4400a66b8bffb",
+        "snippet": "Our Experts Discuss Management Through Real-Life Patient Cases Medscape CME &amp; Education Hello, Dr. Lee | Your Activities Education Alert Optimizing Outcomes for Thyroid Cancer With NTRK Gene",
+        "sender": "\"Medscape CME & Education\" <Medscape@mail.medscape.org>",
+        "subject": "How Would You Manage These Patients With Thyroid Cancer?",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c4358e488f5491",
+        "snippet": "Invite teammates to plan, track, and build together in Airtable. Airtable logo Invite your team to collaborate Drop down with list of teammates Airtable is even more powerful when your team builds with",
+        "sender": "The Airtable Team <team@mail.airtable.com>",
+        "subject": "Don’t build alone—invite your team",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c42f82f3790bd8",
+        "snippet": "This message contains My NCBI what&#39;s new results from the National Center for Biotechnology Information (NCBI) at the US National Library of Medicine (NLM). Do not reply directly to this message.",
+        "sender": "My NCBI <efback@ncbi.nlm.nih.gov>",
+        "subject": "What's new for '(pediatrics[TitleAbstract] OR child[TitleAbstract] OR infant[TitleAbstract]) AND (Pediatrics[Journal] OR JAMA pediatr[Journal] OR Lancet Child Adolesc Health[Journal] OR J Pediatr[Journal]…' in PubMed",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c42f31e2221c73",
+        "snippet": "추천 보기 ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
+        "sender": "LinkedIn <messages-noreply@linkedin.com>",
+        "subject": "Seung Ju님, JLo Beauty의 Founder - Jennifer Lopez님을 팔로우하는 게 어떠세요?",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c41f1d54b17e5f",
+        "snippet": "쿠팡홈으로가기 이*주님 쿠팡에서 주문하신 구매내역을 안내해드립니다. (쿠폰번호 SMS 전송 및 배송상태 확인은 마이쿠팡에서 가능합니다) 삼육두유 달콤한 두유 B 파우치, 190ml, 30개 구매 상세내역 쿠팡가 수량 구매금액 배송정보 판매자 삼육두유 달콤한 두유 B 파우치, 190ml, 30개 16300원 1 16300원 주문배송조회 쿠팡(주) 주문금액",
+        "sender": "\"쿠팡\" <noreply@e.coupang.com>",
+        "subject": "[쿠팡] 이*주님 주문하신 내역을 확인해주세요.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c4153b6ace81d4",
+        "snippet": "월급날 주원이네님이 2026. 2. 10. (화요일)에 열리는 월급날 일정에 나를 초대했습니다. 예정된 일정이 있습니다. 월급날 2026. 2. 10. (화요일) 주최자 주원이네 savior714@gmail.com 참석자 모든 일정 세부정보 보기 Google Calendar에서 보낸 초대장 캘린더 알림을 수신 허용했으므로 전송된 이메일입니다. 더 이상 이러한",
+        "sender": "Google Calendar <calendar-notification@google.com>",
+        "subject": "알림: 월급날 - 2026. 2. 10. (화) (savior714@gmail.com)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c414c50aaa92f8",
+        "snippet": "조원장님 휴가 주원이네님이 2026. 2. 10. (화요일) – 2026. 2. 13. (금요일)에 열리는 조원장님 휴가 일정에 나를 초대했습니다. 예정된 일정이 있습니다. 조원장님 휴가 2026. 2. 10. (화요일) – 2026. 2. 13. (금요일) 주최자 주원이네 savior714@gmail.com 참석자 모든 일정 세부정보 보기 Google",
+        "sender": "Google Calendar <calendar-notification@google.com>",
+        "subject": "알림: 조원장님 휴가 - 2026. 2. 10. (화) - 2026. 2. 13. (금) (savior714@gmail.com)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c40dba975d3d0c",
+        "snippet": "쿠팡홈으로가기 이*주님 쿠팡에서 주문하신 구매내역을 안내해드립니다. (쿠폰번호 SMS 전송 및 배송상태 확인은 마이쿠팡에서 가능합니다) 디보트브리엘 버블클렌저 핑크 레인보우 + 블루 언더더씨 + 옐로우 레이싱카 200ml 3종 세트, 1세트 구매 상세내역 쿠팡가 수량 구매금액 배송정보 판매자 디보트브리엘 버블클렌저 핑크 레인보우 + 블루 언더더씨 + 옐로우",
+        "sender": "\"쿠팡\" <noreply@e.coupang.com>",
+        "subject": "[쿠팡] 이*주님 주문하신 내역을 확인해주세요.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3dc8ff13aad9d",
+        "snippet": "These featured articles published during the past week have been selected by our editors. Click below to read them on the JAMA Network website for free. Trouble viewing this email? Read it Online Alt",
+        "sender": "JAMA Network <updates@email.jamanetwork.com>",
+        "subject": "Weekly Highlights From the JAMA Network",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c3dc0aaf811efc",
+        "snippet": "쿠팡홈으로가기 이*주님 쿠팡에서 주문하신 구매내역을 안내해드립니다. (쿠폰번호 SMS 전송 및 배송상태 확인은 마이쿠팡에서 가능합니다) 창억떡 부드럽고 쫄깃한 호박인절미 (냉동), 500g, 1개입, 1개 구매 상세내역 쿠팡가 수량 구매금액 배송정보 판매자 창억떡 부드럽고 쫄깃한 호박인절미 (냉동), 500g, 1개입, 1개 10900원 1 10900원",
+        "sender": "\"쿠팡\" <noreply@e.coupang.com>",
+        "subject": "[쿠팡] 이*주님 주문하신 내역을 확인해주세요.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3daed5302db8c",
+        "snippet": "Elevate your practice with this special offer. View in browser Your Exclusive NEJM Offer A Special Rate for Dr. Lee Stay Informed with the Most Trusted Medical Research Best Value Just $169/year for",
+        "sender": "The New England Journal of Medicine <webmaster@info.nejm.org>",
+        "subject": "Special Offer: Subscribe to NEJM today",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c3cc97d34a7dec",
+        "snippet": "Hi savior714-8463, There was an error deploying stock-vercel to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3c4f498f1ade9",
+        "snippet": "Learn the latest evidence, guidelines, and formula options to support children with cow&#39;s milk allergy Medscape CME &amp; Education Hello, Dr. Lee | Your Activities Education Alert Managing",
+        "sender": "Medscape Education <Medscape@mail.medscape.org>",
+        "subject": "Key Guidance for Managing Cow’s Milk Allergy in Children",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c3c2a512d302dc",
+        "snippet": "김원장님 휴가 주원이네님이 2026. 2. 9. (월요일) – 2026. 2. 10. (화요일)에 열리는 김원장님 휴가 일정에 나를 초대했습니다. 예정된 일정이 있습니다. 김원장님 휴가 2026. 2. 9. (월요일) – 2026. 2. 10. (화요일) 주최자 주원이네 savior714@gmail.com 참석자 모든 일정 세부정보 보기 Google",
+        "sender": "Google Calendar <calendar-notification@google.com>",
+        "subject": "알림: 김원장님 휴가 - 2026. 2. 9. (월) - 2026. 2. 10. (화) (savior714@gmail.com)",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c3c082f6c1b988",
+        "snippet": "[savior714/automation] Type Check workflow run Type Check: All jobs have failed View workflow run Status Job Annotations Type Check / MyPy Type Check Failed in 45 seconds annotations for Type Check /",
+        "sender": "SEUNGJU LEE <notifications@github.com>",
+        "subject": "[savior714/automation] Run failed: Type Check - main (10874f1)",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3beb563b5d0fa",
+        "snippet": "Steam 찜 목록에 있는 게임 1개가 할인 중입니다! Project Hospital -60% ₩ 27000 ₩ 10800 특별 할인! 종료일: 2026년 2월 21일 3:00am KST 찜 목록 보기 특정 가격이나 할인 혜택은 변경될 수 있습니다. 자세한 정보는 Steam 상점 페이지에서 확인하세요. Steam 찜 목록에 위의 제품이 있는 경우 보내 드리는",
+        "sender": "Steam <noreply@steampowered.com>",
+        "subject": "Steam 찜 목록에 있는 Project Hospital 제품이 지금 할인 중입니다!",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3aa4e20075552",
+        "snippet": "[savior714/automation] Type Check workflow run Type Check: All jobs have failed View workflow run Status Job Annotations Type Check / Pytest Unit Tests Failed in 55 seconds annotations for Type Check /",
+        "sender": "SEUNGJU LEE <notifications@github.com>",
+        "subject": "[savior714/automation] Run failed: Type Check - main (440b831)",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3a2a54ba9e046",
+        "snippet": "Expert panel reviews the latest advances in dengue prevention Medscape CME &amp; Education Hello, Dr. Lee | Your Activities Education Alert Breaking Dengue&#39;s Grip: Epidemiology, Immune Responses,",
+        "sender": "Medscape Education <Medscape@mail.medscape.org>",
+        "subject": "Understanding Dengue: From Transmission to Prevention",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c39d56c6999c85",
+        "snippet": "Dr Seungju Lee - February 7, 2026 - Articles published today from the topics and columnists you&#39;re following February 7, 2026 Medscape My Alert Customized Alert for Dr Seungju Lee – February 7,",
+        "sender": "Medscape Topic Alert <topic_alert@email.medscape.com>",
+        "subject": "Where Death Delights: Resurrecting the Autopsy",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c38f816634421a",
+        "snippet": "Hi savior714-8463, There was an error deploying stock-vercel to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c38d6df73fa230",
+        "snippet": "This message contains My NCBI what&#39;s new results from the National Center for Biotechnology Information (NCBI) at the US National Library of Medicine (NLM). Do not reply directly to this message.",
+        "sender": "My NCBI <efback@ncbi.nlm.nih.gov>",
+        "subject": "What's new for '(pediatrics[TitleAbstract] OR child[TitleAbstract] OR infant[TitleAbstract]) AND (Pediatrics[Journal] OR JAMA pediatr[Journal] OR Lancet Child Adolesc Health[Journal] OR J Pediatr[Journal]…' in PubMed",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c38b0eff6083af",
+        "snippet": "Hi savior714-8463, There was an error deploying stock-vercel to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c38a44933afe18",
+        "snippet": "추천 보기 ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
+        "sender": "LinkedIn <messages-noreply@linkedin.com>",
+        "subject": "Seung Ju님, 조코딩 JoCoding의 CEO & Creator - Dong Keun Jo님을 팔로우하는 게 어떠세요?",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c388d157726e47",
+        "snippet": "Hi savior714-8463, There was an error deploying stock-vercel to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c386a3f1818b0b",
+        "snippet": "Hi savior714-8463, There was an error deploying stock-vercel to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3869701eb2b78",
+        "snippet": "Hi savior714-8463, There was an error deploying stock-vercel to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c384a9ddffbf5e",
+        "snippet": "The New England Journal of Medicine View in browser Advertisement User SEUNGJU LEE SUBSCRIBE NEJM logo Weekend Briefing February 7, 2026 Image Of the Week IMAGES IN CLINICAL MEDICINE A 39-year-old",
+        "sender": "NEJM <webmaster@n.nejm.org>",
+        "subject": "Weekend Briefing from NEJM.org",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c381a7f621f33e",
+        "snippet": "Access request for Notebook minguss0821@gmail.com is requesting Viewer access to: 클로드 모방하기 View Request You have received this email because minguss0821@gmail.com requested access to a Notebook in",
+        "sender": "NotebookLM <NotebookLM-noreply@google.com>",
+        "subject": "Share Request for 클로드 모방하기",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c381a51eda9df8",
+        "snippet": "Access request for Notebook minguss0821@gmail.com is requesting Viewer access to: 바이브코딩 지침서 View Request You have received this email because minguss0821@gmail.com requested access to a Notebook in",
+        "sender": "NotebookLM <NotebookLM-noreply@google.com>",
+        "subject": "Share Request for 바이브코딩 지침서",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c379ee36018b42",
+        "snippet": "Clinical updates and insights across the care continuum. Medscape CME &amp; Education Hello, Dr. Lee | Your Activities Education Alert Navigating Advances in TRK Fusion-Positive Cancers: A",
+        "sender": "Medscape Education <Medscape@mail.medscape.org>",
+        "subject": "Advances in TRK Fusion-Positive Cancers",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c3621d9dbcbc4d",
+        "snippet": "N Pay 구매하신 상품의 구매확정처리 부탁드립니다. 상품을 받으신 후 만족하셨다면 구매확정을 부탁드립니다. 아래 기한까지 구매확정을 하지 않으실 경우, 이후 자동으로 구매가 확정될 예정입니다. 만일, 구매확정기한 내 정상적으로 상품을 수령하지 못하신 경우에는 판매자문의 또는 구매확정 연장을 해주세요. 고객명 이*주님 주문번호 2026020325694041",
+        "sender": "\"네이버페이\" <naverpayadmin_noreply@navercorp.com>",
+        "subject": "[네이버페이] 구매하신 제품을 무사히 받으셨다면, 구매를 확정 부탁드립니다.",
+        "category": "🛒_Shopping_Promo",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c34a8dc112182a",
+        "snippet": "Hear from the experts. Medscape CME &amp; Education Hello, Dr. Lee | Your Activities Education Alert Pediatric Low-Grade Glioma With BRAF Alterations: Stories, Science, and Strategies 30 min EBAC Join",
+        "sender": "Medscape Education <Medscape@mail.medscape.org>",
+        "subject": "How Do You Manage Pediatric Low-Grade Glioma?",
+        "category": "Unclassified",
+        "method": "Fallback",
+        "reasoning": "Could not classify via Rules or AI."
+    },
+    {
+        "id": "19c34875af14f08d",
+        "snippet": "Hi savior714-8463, There was an error deploying blog to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If you&#39;d",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3485dda3156ec",
+        "snippet": "Hi savior714-8463, There was an error deploying blog to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If you&#39;d",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    },
+    {
+        "id": "19c3480c5c7ecfe6",
+        "snippet": "Hi savior714-8463, There was an error deploying blog to the production environment on savior714&#39;s projects. See deployment details You can also view latest deployments for branch main. If you&#39;d",
+        "sender": "Vercel <notifications@vercel.com>",
+        "subject": "Failed production deployment on team 'savior714's projects'",
+        "category": "💻_Dev_Tech",
+        "method": "Rule",
+        "reasoning": "Matched static regex rules."
+    }
+]
