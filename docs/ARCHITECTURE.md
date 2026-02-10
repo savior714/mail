@@ -35,5 +35,5 @@ To overcome Gemini's 15 RPM free tier limit and handle massive historical data, 
 ### `src.services.gmail_applier`
 - Manages Gmail label creation and high-performance `batchModify` operations.
 
-### `src.main_local`
-- Primary Production TUI providing a unified dashboard for all stages.
+### `src.main`
+- Primary Production TUI providing a unified dashboard for all stages (formerly `main_local`).

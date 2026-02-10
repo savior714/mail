@@ -9,8 +9,10 @@
 - **Repo Setup**: Initialized Git, linked to `savior714/mail`, added `skills` submodule.
 - **Migration**: Switched to Google Gemini Flash (`gemini-flash-latest`).
 - **Arch Pivot**: Adopted "Local-First AI Archivist" strategy (Sync -> SQLite -> AI Rule Gen -> Local Apply).
-- **Implementation**: Created `src/main_local.py` (TUI), `Email` model (`peewee`), and rule synthesis logic.
-- **Automation**: Implemented "Monthly Full Auto Pipeline" ([a] option) which automates Sync, AI Analysis, Local Apply, and Cloud Sync in one flow.
+- **Implementation**: Created `src/main.py` (Unified TUI), `Email` model (`peewee`), and rule synthesis logic.
+- **Organization**: Reorganized project into `scripts/`, `tests/`, and `archive/` directories.
+- **Skills**: Replaced local `skills/` with `antigravity-awesome-skills` repository for enhanced capabilities.
+- **Automation**: Implemented "Monthly Full Auto Pipeline" ([a] option).
 - **Optimization**: Enabled unlimited sender analysis in `RuleGenerator` and pagination support in `GmailClient`.
 - **Simplification**: Removed `History/Batch` tags for cleaner Gmail organization; retained `⚠️_Big_Trash` flagging.
 - **Documentation**: Fully refactored `README.md`, `ARCHITECTURE.md`, and `USAGE.md` for production.

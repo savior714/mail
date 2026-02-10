@@ -44,6 +44,13 @@ Push your audited classifications back to Gmail:
 - Run **[4] Cloud Sync** in the TUI.
 - Watch as labels like `Archived/💰_Finance` are applied via high-speed batch requests.
 
+## 🛠️ Project Structure
+- **`src/main.py`**: Primary Production TUI entry point.
+- **`scripts/`**: Utility scripts (model listing, etc.).
+- **`tests/`**: Unit and integration tests.
+- **`archive/`**: Legacy code and dry-run versions.
+- **`antigravity-awesome-skills/`**: Curated AI skills library (Replacing legacy `skills/`).
+
 ## 📁 Documentation
 - [Architecture Guide](docs/ARCHITECTURE.md): Deep dive into the Synthesis pattern.
 - [Usage Guide](docs/USAGE.md): Detailed CLI instructions.
