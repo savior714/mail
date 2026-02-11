@@ -9,7 +9,7 @@ import google.generativeai as genai
 from tqdm import tqdm
 from peewee import fn
 
-from src.models import Email, db
+from src.models import Email, LearnedRule, db
 from src.config import AppConfig
 
 class RuleGenerator:
@@ -27,14 +27,14 @@ class RuleGenerator:
     def generate_rules(self, top_n: Optional[int] = 200, learn: bool = True) -> Dict[str, Any]:
         """
         1. Query Top N senders from DB.
-        2. (Optional) Learn new Regex patterns from Manual fixes in DB.
-        3. Merge with existing rules.json.
+        2. (Optional) Learn/Update Regex patterns from Manual fixes in DB.
+        3. Match against Hard Rules and Persistent Learned Rules.
         4. Call AI for NEW senders.
         5. Save to rules.json.
         """
-        self.logger.info("🚀 [Learn Rules] Starting rule generation pipeline...")
+        self.logger.info("🚀 [Learn Rules] Starting Adaptive Learning v2 pipeline...")
         
-        # Load existing rules
+        # Load existing rules for metadata consistency
         existing_rules = {}
         if os.path.exists("rules.json"):
             try:
@@ -43,15 +43,31 @@ class RuleGenerator:
             except Exception as e:
                 self.logger.error(f"Error loading rules.json: {e}")
 
-        # 1. Adaptive Learning: Extract patterns from manual fixes
-        learned_patterns = {}
+        # 1. Adaptive Learning Phase
         if learn:
-            self.logger.info("🔍 Step 1: Adaptive Learning - Extracting patterns from manual fixes...")
-            learned_patterns = self.learn_patterns_from_manual()
-            if learned_patterns:
-                self.logger.info(f"✅ Learned {len(learned_patterns)} new patterns from user feedback.")
-            else:
-                self.logger.info("ℹ️ Proceeding with existing hard rules (No new manual patterns found).")
+            self.logger.info("🔍 Step 1: Intelligence Phase - Learning from manual fixes...")
+            # GC: Clean up low confidence or stagnant rules first
+            deleted = LearnedRule.delete().where(
+                (LearnedRule.confidence < 0.3) | 
+                (LearnedRule.last_hit_at < datetime.datetime.now() - datetime.timedelta(days=30))
+            ).execute()
+            if deleted:
+                self.logger.info(f"🧹 GC: Removed {deleted} outdated or low-confidence learned rules.")
+
+            new_patterns = self.learn_patterns_from_manual()
+            if new_patterns:
+                self.logger.info(f"✨ AI generated/optimized {len(new_patterns)} patterns.")
+                # Persistence: Update LearnedRule table
+                with db.atomic():
+                    for pattern, category in new_patterns.items():
+                        LearnedRule.get_or_create(
+                            pattern=pattern, 
+                            defaults={'category': category}
+                        )
+            
+        # Load all learned rules from DB for matching
+        persistent_learned_rules = list(LearnedRule.select().where(LearnedRule.confidence > 0.3).order_by(LearnedRule.hit_count.desc()))
+        self.logger.info(f"📚 Loaded {len(persistent_learned_rules)} active learned rules from database.")
 
         # 2. Get Senders with metadata
         self.logger.info(f"📊 Step 2: Fetching top {top_n} senders from database...")
@@ -87,17 +103,21 @@ class RuleGenerator:
         final_rules = {}
 
         for sender, meta in db_senders.items():
-            search_text = sender + " " + " ".join(meta["subjects"])
+            search_text = f"{sender} {' '.join(meta['subjects'])}"
             matched_rule = None
 
-            # Layer 0: Learned Patterns (Highest Priority from manual feedback)
-            for pattern, category in learned_patterns.items():
-                if re.search(pattern, search_text, re.I):
+            # Layer 0: Learned Rules (Persistent + DB Backed)
+            for lr in persistent_learned_rules:
+                if re.search(lr.pattern, search_text, re.I):
                     matched_rule = {
-                        "category": category,
-                        "reasoning": f"Learned from manual correction (Matched: {pattern})",
+                        "category": lr.category,
+                        "reasoning": f"Adaptive Learning Match (Pattern: {lr.pattern})",
                         "source": "Learned"
                     }
+                    # Update Lifecycle Stats
+                    lr.hit_count += 1
+                    lr.last_hit_at = datetime.datetime.now()
+                    lr.save()
                     break
             
             if matched_rule:
@@ -157,51 +177,64 @@ class RuleGenerator:
     def learn_patterns_from_manual(self) -> Dict[str, str]:
         """
         Scans DB for manual corrections and asks AI to extract generic regex patterns.
+        Uses negative samples for cross-validation to prevent false positives.
         Returns mapping of {regex_pattern: category}.
         """
+        # 1. Positive Samples (User corrected to Manual)
         manual_emails = (Email
                         .select(Email.sender, Email.subject, Email.category)
                         .where(Email.rule_source == 'Manual')
-                        .limit(50))
+                        .order_by(Email.date.desc())
+                        .limit(40))
         
         if not manual_emails:
             return {}
 
-        samples = []
+        pos_samples = []
+        target_categories = set()
         for e in manual_emails:
-            samples.append({
+            target_categories.add(e.category)
+            pos_samples.append({
                 "sender": e.sender,
                 "subject": e.subject,
                 "target_category": e.category
             })
 
+        # 2. Negative Samples (Samples from other categories for cross-validation)
+        # Fetch a few samples from categories that user ISN'T fixing right now
+        neg_emails = (Email
+                     .select(Email.sender, Email.subject, Email.category)
+                     .where((Email.is_classified == True) & (Email.category.not_in(list(target_categories))))
+                     .order_by(fn.Random())
+                     .limit(20))
+        
+        neg_samples = [{"sender": e.sender, "subject": e.subject, "category": e.category} for e in neg_emails]
+
         prompt = f"""
-        You are a Regex Pattern Engineer. 
+        You are an elite Regex Pattern Engineer. 
         Objective: Create high-performance, robust python-style regex patterns based on manual email classifications.
         
-        Manual Classifications:
-        {json.dumps(samples, indent=2, ensure_ascii=False)}
+        [POSITIVE SAMPLES] (Must match these):
+        {json.dumps(pos_samples, indent=2, ensure_ascii=False)}
 
-        Instruction:
-        1. Group these emails by their target_category.
-        2. For each category, generate 1-3 regex patterns that would have correctly caught these emails.
-        3. Focus on unique identifiers (domains, specific keywords in subjects).
-        4. Patterns should be generic enough to catch future similar emails but specific enough to avoid false positives.
-        5. Use word boundaries \\b where appropriate.
-        6. Return a JSON object mapping 'regex_pattern' to 'category'.
+        [NEGATIVE SAMPLES] (Must NOT match these):
+        {json.dumps(neg_samples, indent=2, ensure_ascii=False)}
         
-        Example Output:
-        {{
-            "gpters\\\\.org": "🔒_Auth_System",
-            "\\\\bapple music\\\\b": "🏠_Personal_Life"
-        }}
+        Instruction:
+        1. Generalization: If multiple senders share a domain (e.g., portal.gpters.org, mail.gpters.org), generate a domain-wide pattern like 'gpters\\.org'.
+        2. Simplification: Favor short, powerful patterns over long specific ones. Prefer domain matches if the sender is reliable.
+        3. Cross-Validation: ENSURE your patterns do NOT trigger on any of the provided negative samples.
+        4. Negative Feedback: If a keyword is common but context-specific, use negative lookaheads (e.g., '^(?!.*receipt).*promo.*$').
+        5. Precision: Use word boundaries \\b for keyword matches.
+        
+        Output Format:
+        Return a JSON object: {{"regex_pattern": "category"}}
         
         IMPORTANT: Return ONLY valid JSON.
         """
         
         try:
             if not self.model: return {}
-            # Brief delay for safety
             time.sleep(2)
             response = self.model.generate_content(
                 prompt,
@@ -209,7 +242,7 @@ class RuleGenerator:
             )
             return json.loads(response.text)
         except Exception as e:
-            self.logger.error(f"Pattern Learning Error: {e}")
+            self.logger.error(f"Intelligence Phase Error: {e}")
             return {}
 
     def _call_ai_batch(self, senders_with_subjects: List[tuple]) -> Dict[str, Any]:
@@ -307,6 +340,22 @@ class RuleGenerator:
                 source = info.get("source", "Manual")
                 reasoning = info.get("reasoning", "")
                 
+                # Feedback Loop: If user manually corrects a 'Learned' result, penalize the rule
+                if source == 'Manual':
+                    # Find if there was a previous 'Learned' match for this sender
+                    prev_email = Email.get_or_none(Email.sender == sender)
+                    if prev_email and prev_email.rule_source == 'Learned' and prev_email.category != category:
+                        # Extract the pattern from reasoning (it was stored as "Adaptive Learning Match (Pattern: ...)")
+                        pattern_match = re.search(r"Pattern: (.*)\)", prev_email.reasoning or "")
+                        if pattern_match:
+                            target_pattern = pattern_match.group(1)
+                            lr = LearnedRule.get_or_none(LearnedRule.pattern == target_pattern)
+                            if lr:
+                                self.logger.warning(f"📉 Feedback: Penalizing rule '{target_pattern}' due to manual correction.")
+                                lr.correction_count += 1
+                                lr.confidence = max(0.0, lr.confidence - 0.4) # Aggressive reduction
+                                lr.save()
+
                 # Update: only if category changed or not yet classified
                 rows = (Email
                         .update(category=category, 

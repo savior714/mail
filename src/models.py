@@ -20,13 +20,21 @@ class Email(BaseModel):
     rule_source = CharField(null=True) # 'AI', 'Rule', 'Manual'
     size_estimate = IntegerField(default=0)
 
+class LearnedRule(BaseModel):
+    pattern = CharField(unique=True)
+    category = CharField()
+    confidence = FloatField(default=1.0) # 0.0 to 1.0
+    hit_count = IntegerField(default=0)
+    correction_count = IntegerField(default=0)
+    created_at = DateTimeField(default=datetime.datetime.now)
+    last_hit_at = DateTimeField(null=True)
+
 def init_db():
     db.connect(reuse_if_open=True)
-    db.create_tables([Email])
+    db.create_tables([Email, LearnedRule])
     
     # Simple migration: Add columns if they don't exist
     columns = [c.name for c in db.get_columns('email')]
-    
     if 'is_synced' not in columns:
         print("Migrating: Adding 'is_synced' column to Email table...")
         db.execute_sql('ALTER TABLE email ADD COLUMN is_synced BOOLEAN DEFAULT 0')

@@ -12,7 +12,7 @@
     - Introduced specialized **Car_Life** and **Notice_Privacy** categories.
     - Refined **Auth_System** and **Dev_Tech** priority handles.
 - **Intelligence**: 
-    - Implemented **Adaptive Rule Learning**: Automatically extracts generic regex patterns from manual user corrections.
+    - Implemented **Adaptive Rule Learning v2**: Persistent database-backed patterns with confidence tracking and feedback loop.
     - Added **AI Batching**: Chunked classification (25 senders/batch) to prevent JSON truncation errors.
     - **UX Logging**: Added step-by-step progress indicators for the "Learn Rules" process.
 - **Design Overhaul**: Applied a unique "Hand-Drawn" pencil aesthetic using Tailwind CSS v4.
