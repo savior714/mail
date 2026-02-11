@@ -28,9 +28,11 @@ export interface DatabaseStats {
 }
 
 export interface Rule {
-    sender: string;
+    sender?: string;  // Optional for subject rules
     category: string;
-    keywords?: string;
+    rule_type?: 'sender' | 'subject';  // NEW: Rule type
+    keyword?: string;  // NEW: Subject keyword for subject rules
+    keywords?: string;  // Legacy field
 }
 
 export const getStats = async (): Promise<Stats> => {

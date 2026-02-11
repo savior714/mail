@@ -162,19 +162,35 @@ def add_rule(rule: Rule):
         # Convert to dict if we found an old list
         rules = {r['sender']: {k:v for k,v in r.items() if k != 'sender'} for r in rules if 'sender' in r}
     
-    sender = rule.sender
-    rule_info = rule.dict(exclude={"sender"})
-    rules[sender] = rule_info
+    # Determine the key based on rule type
+    rule_type = rule.rule_type or 'sender'
+    if rule_type == 'subject':
+        key = f"keyword:{rule.keyword}"
+        rule_info = rule.dict(exclude={"keyword"})
+        rule_info["keyword"] = rule.keyword
+    else:
+        key = rule.sender
+        rule_info = rule.dict(exclude={"sender"})
+    
+    rules[key] = rule_info
     
     _save_rules_file(rules)
     
     # Sync to DB: Mark emails as 'Manual' for learning
     try:
-        updated = (Email
-                   .update(category=rule.category, rule_source='Manual', is_classified=True)
-                   .where(Email.sender == sender)
-                   .execute())
-        logger.info(f"Added/Updated rule for {sender}. Sync'd {updated} emails as 'Manual' in DB.")
+        if rule_type == 'sender':
+            updated = (Email
+                       .update(category=rule.category, rule_source='Manual', is_classified=True)
+                       .where(Email.sender == rule.sender)
+                       .execute())
+            logger.info(f"Added/Updated sender rule for {rule.sender}. Sync'd {updated} emails as 'Manual' in DB.")
+        else:
+            # For subject rules, update emails where subject contains the keyword
+            updated = (Email
+                       .update(category=rule.category, rule_source='Manual', is_classified=True)
+                       .where(Email.subject.contains(rule.keyword))
+                       .execute())
+            logger.info(f"Added/Updated subject keyword rule '{rule.keyword}'. Sync'd {updated} emails as 'Manual' in DB.")
     except Exception as e:
         logger.error(f"Failed to sync manual rule to DB: {e}")
 

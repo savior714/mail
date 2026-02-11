@@ -9,7 +9,9 @@ const Rules: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const [showAddForm, setShowAddForm] = useState(false);
+    const [ruleType, setRuleType] = useState<'sender' | 'subject'>('sender');  // NEW
     const [newSender, setNewSender] = useState('');
+    const [newKeyword, setNewKeyword] = useState('');  // NEW
     const [newCategory, setNewCategory] = useState('💰 Finance');
 
     const fetchRules = async () => {
@@ -30,11 +32,19 @@ const Rules: React.FC = () => {
 
     const handleAddRule = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newSender) return;
+
+        if (ruleType === 'sender' && !newSender) return;
+        if (ruleType === 'subject' && !newKeyword) return;
 
         try {
-            await addRule({ sender: newSender, category: newCategory });
+            const ruleData: Rule = {
+                category: newCategory,
+                rule_type: ruleType,
+                ...(ruleType === 'sender' ? { sender: newSender } : { keyword: newKeyword })
+            };
+            await addRule(ruleData);
             setNewSender('');
+            setNewKeyword('');
             setShowAddForm(false);
             fetchRules();
         } catch (error) {
@@ -53,7 +63,8 @@ const Rules: React.FC = () => {
     };
 
     const filteredRules = rules.filter(r =>
-        r.sender.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (r.sender && r.sender.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (r.keyword && r.keyword.toLowerCase().includes(searchTerm.toLowerCase())) ||
         r.category.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -83,41 +94,81 @@ const Rules: React.FC = () => {
 
                     <h3 className="text-xl font-bold text-slate-800 mb-4 scribble-underline decoration-wavy">Drafting New Rule</h3>
 
-                    <form onSubmit={handleAddRule} className="flex gap-4 items-end">
-                        <div className="flex-1">
-                            <label className="block text-lg font-bold text-slate-700 mb-1">Sender:</label>
-                            <input
-                                type="email"
-                                value={newSender}
-                                onChange={(e) => setNewSender(e.target.value)}
-                                className="w-full bg-transparent border-b-2 border-slate-800 px-2 py-1 text-xl font-handwriting focus:border-blue-500 outline-none placeholder:text-slate-400/50"
-                                placeholder="newsletter@sketchy.com"
-                                required
-                                autoFocus
-                            />
+                    <form onSubmit={handleAddRule} className="space-y-4">
+                        {/* Rule Type Selector */}
+                        <div className="flex gap-6 pb-2 border-b border-slate-300">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    value="sender"
+                                    checked={ruleType === 'sender'}
+                                    onChange={(e) => setRuleType(e.target.value as 'sender')}
+                                    className="w-4 h-4 accent-blue-500"
+                                />
+                                <span className="font-bold text-slate-700">By Sender</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    value="subject"
+                                    checked={ruleType === 'subject'}
+                                    onChange={(e) => setRuleType(e.target.value as 'subject')}
+                                    className="w-4 h-4 accent-blue-500"
+                                />
+                                <span className="font-bold text-slate-700">By Subject Keyword</span>
+                            </label>
                         </div>
-                        <div className="w-1/3">
-                            <label className="block text-lg font-bold text-slate-700 mb-1">Category:</label>
-                            <select
-                                value={newCategory}
-                                onChange={(e) => setNewCategory(e.target.value)}
-                                className="w-full bg-transparent border-b-2 border-slate-800 px-2 py-1 text-xl font-handwriting focus:border-blue-500 outline-none cursor-pointer"
-                            >
-                                <option>💰_Finance</option>
-                                <option>🛒_Shopping_Checkout</option>
-                                <option>🛒_Shopping_Promo</option>
-                                <option>💻_Dev_Tech</option>
-                                <option>🏥_Medical_Work</option>
-                                <option>🚗_Car_Life</option>
-                                <option>🏢_Notice_Privacy</option>
-                                <option>🏠_Personal_Life</option>
-                                <option>🔒_Auth_System</option>
-                                <option>🚫_Spam</option>
-                            </select>
+
+                        <div className="flex gap-4 items-end">
+                            <div className="flex-1">
+                                <label className="block text-lg font-bold text-slate-700 mb-1">
+                                    {ruleType === 'sender' ? 'Sender:' : 'Subject Keyword:'}
+                                </label>
+                                {ruleType === 'sender' ? (
+                                    <input
+                                        type="email"
+                                        value={newSender}
+                                        onChange={(e) => setNewSender(e.target.value)}
+                                        className="w-full bg-transparent border-b-2 border-slate-800 px-2 py-1 text-xl font-handwriting focus:border-blue-500 outline-none placeholder:text-slate-400/50"
+                                        placeholder="newsletter@sketchy.com"
+                                        required
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <input
+                                        type="text"
+                                        value={newKeyword}
+                                        onChange={(e) => setNewKeyword(e.target.value)}
+                                        className="w-full bg-transparent border-b-2 border-slate-800 px-2 py-1 text-xl font-handwriting focus:border-blue-500 outline-none placeholder:text-slate-400/50"
+                                        placeholder="명세서, 영수증, etc."
+                                        required
+                                        autoFocus
+                                    />
+                                )}
+                            </div>
+                            <div className="w-1/3">
+                                <label className="block text-lg font-bold text-slate-700 mb-1">Category:</label>
+                                <select
+                                    value={newCategory}
+                                    onChange={(e) => setNewCategory(e.target.value)}
+                                    className="w-full bg-transparent border-b-2 border-slate-800 px-2 py-1 text-xl font-handwriting focus:border-blue-500 outline-none cursor-pointer"
+                                >
+                                    <option>💰_Finance</option>
+                                    <option>🛒_Shopping_Checkout</option>
+                                    <option>🛒_Shopping_Promo</option>
+                                    <option>💻_Dev_Tech</option>
+                                    <option>🏥_Medical_Work</option>
+                                    <option>🚗_Car_Life</option>
+                                    <option>🏢_Notice_Privacy</option>
+                                    <option>🏠_Personal_Life</option>
+                                    <option>🔒_Auth_System</option>
+                                    <option>🚫_Spam</option>
+                                </select>
+                            </div>
+                            <button type="submit" className="pencil-button bg-green-400 hover:bg-green-500 text-slate-900 font-bold">
+                                Pin It
+                            </button>
                         </div>
-                        <button type="submit" className="pencil-button bg-green-400 hover:bg-green-500 text-slate-900 font-bold">
-                            Pin It
-                        </button>
                     </form>
                 </div>
             )}
@@ -144,7 +195,7 @@ const Rules: React.FC = () => {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr>
-                            <th className="px-12 py-3 text-slate-400 font-bold text-sm uppercase tracking-widest pl-16">Sender</th>
+                            <th className="px-12 py-3 text-slate-400 font-bold text-sm uppercase tracking-widest pl-16">Rule</th>
                             <th className="px-8 py-3 text-slate-400 font-bold text-sm uppercase tracking-widest">Tag</th>
                             <th className="px-8 py-3 text-right"></th>
                         </tr>
@@ -157,28 +208,35 @@ const Rules: React.FC = () => {
                         ) : filteredRules.length === 0 ? (
                             <tr><td colSpan={3} className="px-12 py-4 text-center text-slate-500 h-12 pl-16 font-bold text-xl transform -rotate-1">Nothing written here yet!</td></tr>
                         ) : (
-                            filteredRules.map((rule) => (
-                                <tr key={rule.sender} className="group hover:bg-yellow-50 transition-colors h-12">
-                                    <td className="px-12 py-2 text-slate-700 font-bold text-xl pl-16">{rule.sender}</td>
-                                    <td className="px-8 py-2">
-                                        <span className={`px-2 py-0.5 border-2 border-slate-800 rounded-lg text-sm font-bold shadow-sm transform group-hover:rotate-1 transition-transform inline-block ${rule.category.includes('Shopping') ? 'bg-amber-200' :
-                                            rule.category.includes('Finance') ? 'bg-emerald-200' :
-                                                rule.category.includes('Read') ? 'bg-blue-200' :
-                                                    'bg-slate-200'
-                                            }`}>
-                                            {rule.category}
-                                        </span>
-                                    </td>
-                                    <td className="px-8 py-2 text-right">
-                                        <button
-                                            onClick={() => handleDeleteRule(rule.sender)}
-                                            className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
-                                        >
-                                            <Trash2 className="w-5 h-5" />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
+                            filteredRules.map((rule) => {
+                                const ruleKey = rule.sender || `keyword:${rule.keyword}`;
+                                const displayText = rule.rule_type === 'subject'
+                                    ? `📌 ${rule.keyword}`
+                                    : rule.sender || '';
+
+                                return (
+                                    <tr key={ruleKey} className="group hover:bg-yellow-50 transition-colors h-12">
+                                        <td className="px-12 py-2 text-slate-700 font-bold text-xl pl-16">{displayText}</td>
+                                        <td className="px-8 py-2">
+                                            <span className={`px-2 py-0.5 border-2 border-slate-800 rounded-lg text-sm font-bold shadow-sm transform group-hover:rotate-1 transition-transform inline-block ${rule.category.includes('Shopping') ? 'bg-amber-200' :
+                                                rule.category.includes('Finance') ? 'bg-emerald-200' :
+                                                    rule.category.includes('Read') ? 'bg-blue-200' :
+                                                        'bg-slate-200'
+                                                }`}>
+                                                {rule.category}
+                                            </span>
+                                        </td>
+                                        <td className="px-8 py-2 text-right">
+                                            <button
+                                                onClick={() => handleDeleteRule(ruleKey)}
+                                                className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })
                         )}
                     </tbody>
                 </table>

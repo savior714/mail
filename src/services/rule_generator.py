@@ -159,6 +159,24 @@ class RuleGenerator:
                 final_rules[sender] = {**matched_rule, **meta}
                 continue
 
+            # Layer 0.5: Subject Keyword Rules (Manual)
+            # Check rules.json for subject-based rules (keyword: prefix)
+            for rule_key, rule_data in existing_rules.items():
+                if rule_key.startswith("keyword:"):
+                    keyword = rule_key.replace("keyword:", "")
+                    # Match keyword against all subjects for this sender
+                    if any(re.search(keyword, subj, re.I) for subj in meta.get("subjects", [])):
+                        matched_rule = {
+                            "category": rule_data.get("category", "Unclassified"),
+                            "reasoning": f"Subject keyword match: {keyword}",
+                            "source": "Subject_Rule"
+                        }
+                        break
+            
+            if matched_rule:
+                final_rules[sender] = {**matched_rule, **meta}
+                continue
+
             # Layer 1: Hard Rules (Regex)
             for category, patterns in AppConfig.HARD_RULES.items():
                 matched = False
@@ -402,7 +420,7 @@ class RuleGenerator:
                 reasoning = info.get("reasoning", "")
                 
                 # Feedback Loop: If user manually corrects a 'Learned' result, penalize the rule
-                if source == 'Manual':
+                if source == 'Manual' and not sender.startswith("keyword:"):
                     # Find if there was a previous 'Learned' match for this sender
                     prev_email = Email.get_or_none(Email.sender == sender)
                     if prev_email and prev_email.rule_source == 'Learned' and prev_email.category != category:
@@ -418,14 +436,28 @@ class RuleGenerator:
                                 lr.save()
 
                 # Update: only if category changed or not yet classified
-                rows = (Email
-                        .update(category=category, 
-                                is_classified=True, 
-                                rule_source=source, 
-                                is_synced=False,
-                                reasoning=reasoning)
-                        .where((Email.sender == sender) & ((Email.category != category) | (Email.is_classified == False)))
-                        .execute())
+                # Handle both sender-based and subject keyword-based rules
+                if sender.startswith("keyword:"):
+                    # Subject keyword rule
+                    keyword = sender.replace("keyword:", "")
+                    rows = (Email
+                            .update(category=category, 
+                                    is_classified=True, 
+                                    rule_source=source, 
+                                    is_synced=False,
+                                    reasoning=reasoning)
+                            .where((Email.subject.contains(keyword)) & ((Email.category != category) | (Email.is_classified == False)))
+                            .execute())
+                else:
+                    # Sender-based rule
+                    rows = (Email
+                            .update(category=category, 
+                                    is_classified=True, 
+                                    rule_source=source, 
+                                    is_synced=False,
+                                    reasoning=reasoning)
+                            .where((Email.sender == sender) & ((Email.category != category) | (Email.is_classified == False)))
+                            .execute())
                 
                 if rows > 0:
                     stats[category] = stats.get(category, 0) + rows
