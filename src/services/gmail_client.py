@@ -6,6 +6,9 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from concurrent.futures import ThreadPoolExecutor
+from tenacity import retry, wait_exponential, stop_after_attempt
+import threading
 
 from src.utils.logger import setup_logger
 
@@ -19,7 +22,7 @@ class GmailClient:
     def __init__(self, credentials_path: str = 'credentials.json', token_path: str = 'token.json'):
         self.credentials_path = credentials_path
         self.token_path = token_path
-        self.service = None
+        self._local = threading.local()
         self._labels_cache = {}
 
     def authenticate(self):
@@ -59,18 +62,27 @@ class GmailClient:
                     pickle.dump(creds, token)
             except Exception as e:
                 logger.error("Error saving token.json: %s", e)
+        
+        return creds
 
-        try:
-            self.service = build('gmail', 'v1', credentials=creds)
-            logger.info("Gmail API service built successfully.")
-        except HttpError as error:
-            logger.error("An error occurred building the service: %s", error)
-            raise
+    def _get_service(self):
+        """Returns a thread-local service instance."""
+        if not hasattr(self._local, 'service'):
+            creds = self.authenticate()
+            try:
+                self._local.service = build('gmail', 'v1', credentials=creds, cache_discovery=False)
+                logger.info("Thread-local Gmail API service built.")
+            except HttpError as error:
+                logger.error("An error occurred building the service: %s", error)
+                raise
+        return self._local.service
+
+    @property
+    def service(self):
+        return self._get_service()
 
     def get_labels(self) -> Dict[str, str]:
         """Returns a mapping of {name: id} for all labels."""
-        if not self.service:
-            self.authenticate()
         
         try:
             results = self.service.users().labels().list(userId='me').execute()
@@ -83,9 +95,6 @@ class GmailClient:
 
     def create_label(self, label_name: str) -> str:
         """Creates a label and returns its ID."""
-        if not self.service:
-            self.authenticate()
-        
         try:
             label_body = {
                 'name': label_name,
@@ -111,9 +120,6 @@ class GmailClient:
 
     def batch_modify(self, message_ids: List[str], add_labels: List[str], remove_labels: List[str]):
         """Modifies labels for multiple messages."""
-        if not self.service:
-            self.authenticate()
-        
         if not message_ids:
             return
 
@@ -158,28 +164,42 @@ class GmailClient:
                 if not messages:
                     break
 
-                logger.info("Fetching details for %d messages...", len(messages))
+                logger.info("Fetching details for %d messages in parallel...", len(messages))
 
-                for message in messages:
-                    msg = self.service.users().messages().get(userId='me', id=message['id'], format='metadata').execute()
+                def fetch_message_detail(message_id):
+                    service = self._get_service()
+                    @retry(wait=wait_exponential(multiplier=1, min=2, max=10), stop=stop_after_attempt(3))
+                    def _do_fetch():
+                        return service.users().messages().get(userId='me', id=message_id, format='metadata').execute()
                     
-                    headers = msg.get('payload', {}).get('headers', [])
-                    subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), "(No Subject)")
-                    sender = next((h['value'] for h in headers if h['name'].lower() == 'from'), "(Unknown Sender)")
-                    date_str = next((h['value'] for h in headers if h['name'].lower() == 'date'), None)
-                    snippet = msg.get('snippet', '')
+                    try:
+                        msg = _do_fetch()
+                        headers = msg.get('payload', {}).get('headers', [])
+                        subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), "(No Subject)")
+                        sender = next((h['value'] for h in headers if h['name'].lower() == 'from'), "(Unknown Sender)")
+                        date_str = next((h['value'] for h in headers if h['name'].lower() == 'date'), None)
+                        snippet = msg.get('snippet', '')
 
-                    results.append({
-                        'id': message['id'],
-                        'snippet': snippet,
-                        'sender': sender,
-                        'subject': subject,
-                        'date': date_str,
-                        'sizeEstimate': msg.get('sizeEstimate', 0)
-                    })
-                    
-                    if limit and len(results) >= limit:
-                        break
+                        return {
+                            'id': message_id,
+                            'snippet': snippet,
+                            'sender': sender,
+                            'subject': subject,
+                            'date': date_str,
+                            'sizeEstimate': msg.get('sizeEstimate', 0)
+                        }
+                    except Exception as e:
+                        logger.error(f"Error fetching message {message_id}: {e}")
+                        return None
+
+                with ThreadPoolExecutor(max_workers=10) as executor:
+                    detail_results = list(executor.map(fetch_message_detail, [m['id'] for m in messages]))
+                
+                results.extend([r for r in detail_results if r])
+                
+                if limit and len(results) >= limit:
+                    results = results[:limit]
+                    break
 
                 page_token = response.get('nextPageToken')
                 if not page_token or (limit and len(results) >= limit):

@@ -103,12 +103,16 @@ const Rules: React.FC = () => {
                                 onChange={(e) => setNewCategory(e.target.value)}
                                 className="w-full bg-transparent border-b-2 border-slate-800 px-2 py-1 text-xl font-handwriting focus:border-blue-500 outline-none cursor-pointer"
                             >
-                                <option>📚 Read</option>
-                                <option>💰 Finance</option>
-                                <option>🛒 Shopping</option>
-                                <option>💬 Social</option>
-                                <option>🔒 Security</option>
-                                <option>✈️ Travel</option>
+                                <option>💰_Finance</option>
+                                <option>🛒_Shopping_Checkout</option>
+                                <option>🛒_Shopping_Promo</option>
+                                <option>💻_Dev_Tech</option>
+                                <option>🏥_Medical_Work</option>
+                                <option>🚗_Car_Life</option>
+                                <option>🏢_Notice_Privacy</option>
+                                <option>🏠_Personal_Life</option>
+                                <option>🔒_Auth_System</option>
+                                <option>🚫_Spam</option>
                             </select>
                         </div>
                         <button type="submit" className="pencil-button bg-green-400 hover:bg-green-500 text-slate-900 font-bold">

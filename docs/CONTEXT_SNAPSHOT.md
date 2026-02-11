@@ -5,12 +5,17 @@
 - **Phase**: **Production Web v1.2**
 - **Current Goal**: Maintenance and expansion of the sketchy web ecosystem.
 
-## 2. Key Accomplishments (2026-02-11)
+## 2. Key Accomplishments (2026-02-11 ~ 2026-02-12)
 - **Web Migration**: Successfully pivoted from Flet to FastAPI + React.
-- **Architecture**: Established a decoupled API-driven architecture.
-- **Design Overhaul**: Applied a unique "Hand-Drawn" pencil aesthetic.
-- **Styles**: Migrated to Tailwind CSS v4 (Zero-Config).
-- **Navigation**: Integrated React Router for multi-page dashboard.
+- **Categorization Overhaul**: 
+    - Split Shopping into **Checkout** and **Promo** for clarity.
+    - Introduced specialized **Car_Life** and **Notice_Privacy** categories.
+    - Refined **Auth_System** and **Dev_Tech** priority handles.
+- **Intelligence**: 
+    - Implemented **Adaptive Rule Learning**: Automatically extracts generic regex patterns from manual user corrections.
+    - Added **AI Batching**: Chunked classification (25 senders/batch) to prevent JSON truncation errors.
+    - **UX Logging**: Added step-by-step progress indicators for the "Learn Rules" process.
+- **Design Overhaul**: Applied a unique "Hand-Drawn" pencil aesthetic using Tailwind CSS v4.
 - **Unified Startup**: Created one-click startup scripts for dual-service operation.
 
 ## 3. Tech Stack State
@@ -21,5 +26,5 @@
 - **Charts**: Recharts.
 
 ## 4. Current State
-- **Stability**: High. Build and API flows verified.
-- **Next Focus**: Real-time logging (WebSockets) and Settings persistence.
+- **Stability**: Very High. Batch processing and adaptive learning verified.
+- **Next Focus**: WebSockets for real-time logging and Settings persistence.

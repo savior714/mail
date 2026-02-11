@@ -23,7 +23,7 @@ class EmailSyncer:
         else:
             query = None
         
-        query = None
+
         
         self.logger.info(f"Syncing last {limit} emails{' for range ' + after + ' to ' + before if after else (' for year ' + str(year) if year else '')}...")
         
@@ -31,6 +31,7 @@ class EmailSyncer:
         self.gmail.authenticate()
         
         raw_emails = self.gmail.fetch_emails(limit=limit, query=query)
+        self.logger.info(f"Retrieved {len(raw_emails)} messages from Gmail. Processing and saving to database...")
         
         new_count = 0
         with db.atomic():

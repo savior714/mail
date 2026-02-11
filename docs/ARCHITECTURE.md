@@ -14,10 +14,14 @@ The project migrated from a monolithic TUI/GUI to a modern, decoupled web archit
     - **Middleware**: CORS handling for the React frontend.
     - **Persistence**: SQLite (via `peewee`) for local metadata storage.
 
-## 🔄 Rule Synthesis Funnel
-1.  **Sync (SQLite)**: Fetch headers and size metadata via Gmail API.
-2.  **Logic Synthesis (AI)**: SQL aggregation + Gemini classification to generate `rules.json`.
-3.  **Cloud Apply**: High-speed organization of the mailbox using Gmail's `batchModify`.
+## 🔄 Rule Synthesis Funnel (Layered Logic)
+1.  **Hard Rules (Priority Engine)**: Uses a `Dict[str, List[Regex]]` in `config.py`. 
+    - **Logic**: First match wins based on category order (Finance > Checkout > Dev > ...).
+    - **Purpose**: High-confidence classification for known transaction/security mail.
+2.  **Sync (SQLite)**: Fetch headers and size metadata via Gmail API for AI context.
+3.  **Local-First AI Synthesis**: Orchestrates `gemini-1.5-flash` to classify unhandled senders. 
+    - AI is tuned via a custom system prompt to follow the established priority and handle ambiguity (e.g., non-financial billing).
+4.  **Cloud Apply**: High-speed, batch organization using Gmail's `batchModify`.
 
 ## Module Responsibilities
 

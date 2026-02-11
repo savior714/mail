@@ -12,4 +12,9 @@
     - Established **Tailwind CSS v4** as the primary styling engine.
     - Integrated **React Router** for robust navigation.
     - Created `start_app.bat` for unified local development.
-- **Optimization**: Resolved Tailwind version conflicts (v3/v4) and stabilized CSS generation.
+- **Intelligence & UX**:
+    - Implemented **Adaptive Rule Learning**: Feed-back loop that extracts regex from manual fixes.
+    - Added **AI Batching/Robustness**: Fixed JSON parsing errors by chunking large classification batches.
+    - **UX Polish**: Added detailed logging and startup signals for the rule generation pipeline.
+- **Rule Migration**: Executed batch migration for `rules.json` to handle emoji standardization and category renaming.
+- **Optimization**: Standardized emojis across UI and rules to prevent duplicate label generation.
