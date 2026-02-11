@@ -38,6 +38,31 @@ def main():
         datefmt="[%X]", 
         handlers=[RichHandler(console=console, rich_tracebacks=True)]
     )
+    
+    logger = logging.getLogger(__name__)
+    
+    def month_iterator(start_date, end_date=None):
+        """월 단위로 날짜 범위를 생성하는 제너레이터"""
+        current = start_date
+        
+        while True:
+            # Calculate next month
+            if current.month == 12:
+                next_month = current.replace(year=current.year + 1, month=1, day=1)
+            else:
+                next_month = current.replace(month=current.month + 1, day=1)
+            
+            # Check if we've reached the end
+            if end_date and current >= end_date:
+                break
+            
+            yield (
+                current.strftime("%Y/%m/%d"),
+                next_month.strftime("%Y/%m/%d"),
+                next_month
+            )
+            
+            current = next_month
 
     syncer = EmailSyncer()
     
@@ -75,7 +100,20 @@ def main():
         if choice == "1":
             limit = int(Prompt.ask("How many emails?", default="200"))
             year_input = Prompt.ask("Year (Optional, e.g. 2024)", default="")
-            year = int(year_input) if year_input.isdigit() else None
+            
+            # Enhanced year validation
+            year = None
+            if year_input and year_input.isdigit():
+                year = int(year_input)
+                if not (1900 <= year <= 2100):
+                    console.print("[red]Year must be between 1900 and 2100[/]")
+                    Prompt.ask("Press Enter to continue")
+                    continue
+            elif year_input:
+                console.print("[red]Invalid year format. Please enter a valid year.[/]")
+                Prompt.ask("Press Enter to continue")
+                continue
+                
             syncer.sync(limit=limit, year=year)
             Prompt.ask("Press Enter to continue")
             
@@ -83,50 +121,35 @@ def main():
             import datetime
             start_date_str = Prompt.ask("Start Date (YYYY-MM-DD)", default="2024-01-01")
             try:
-                current_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
-            except ValueError:
-                console.print("[bold red]Invalid date format. Use YYYY-MM-DD.[/]")
+                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
+            except ValueError as e:
+                console.print(f"[bold red]Invalid date format: {e}[/]")
+                console.print("[yellow]Please use YYYY-MM-DD format (e.g., 2024-01-01)[/]")
                 Prompt.ask("Press Enter to return")
                 continue
 
-            # Sync all emails for the month without asking for limit
-            while True:
-                # Calculate next month
-                if current_date.month == 12:
-                    next_date = current_date.replace(year=current_date.year + 1, month=1, day=1)
-                else:
-                    next_date = current_date.replace(month=current_date.month + 1, day=1)
-                
-                after = current_date.strftime("%Y/%m/%d")
-                before = next_date.strftime("%Y/%m/%d")
-                
+            # Use month_iterator for batch processing
+            for after, before, next_date in month_iterator(start_date):
                 syncer.sync(limit=None, after=after, before=before)
                 
                 console.print(f"\n[bold green]Finished month {after} - {before}[/]")
                 cont = Prompt.ask("Continue to next month?", choices=["y", "n"], default="y")
                 if cont == "n":
                     break
-                current_date = next_date
 
         elif choice == "a":
             import datetime
             start_date_str = Prompt.ask("Start Date (Full Auto)", default="2024-01-01")
             try:
-                current_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
-            except ValueError:
-                console.print("[bold red]Invalid date format.[/]")
+                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
+            except ValueError as e:
+                console.print(f"[bold red]Invalid date format: {e}[/]")
+                console.print("[yellow]Please use YYYY-MM-DD format (e.g., 2024-01-01)[/]")
+                Prompt.ask("Press Enter to return")
                 continue
 
-            while True:
-                # Calculate next month
-                if current_date.month == 12:
-                    next_date = current_date.replace(year=current_date.year + 1, month=1, day=1)
-                else:
-                    next_date = current_date.replace(month=current_date.month + 1, day=1)
-
-                after = current_date.strftime("%Y/%m/%d")
-                before = next_date.strftime("%Y/%m/%d")
-
+            # Use month_iterator for full auto pipeline
+            for after, before, next_date in month_iterator(start_date):
                 console.rule(f"[bold yellow]Full Auto Pipeline: {after} - {before}[/]")
                 
                 # 1. Sync
@@ -148,7 +171,6 @@ def main():
                 cont = Prompt.ask("Proceed to next month?", choices=["y", "n"], default="y")
                 if cont == "n":
                     break
-                current_date = next_date
             
         elif choice == "2":
             gen = RuleGenerator()
