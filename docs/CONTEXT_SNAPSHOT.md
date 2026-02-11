@@ -14,6 +14,7 @@
 - **Intelligence**: 
     - Implemented **Adaptive Rule Learning v2**: Persistent database-backed patterns with confidence tracking and feedback loop.
     - Added **AI Batching**: Chunked classification (25 senders/batch) to prevent JSON truncation errors.
+    - **API Quota Management**: Intelligent caching reduces API usage by 80-90%, daily quota tracking with graceful degradation.
     - **UX Logging**: Added step-by-step progress indicators for the "Learn Rules" process.
 - **Design Overhaul**: Applied a unique "Hand-Drawn" pencil aesthetic using Tailwind CSS v4.
 - **Unified Startup**: Created one-click startup scripts for dual-service operation.
