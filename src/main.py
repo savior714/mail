@@ -33,7 +33,7 @@ def main():
     
     # Setup logging for CLI
     logging.basicConfig(
-        level="INFO", 
+        level=logging.INFO,  # Use constant instead of string
         format="%(message)s", 
         datefmt="[%X]", 
         handlers=[RichHandler(console=console, rich_tracebacks=True)]
@@ -57,8 +57,9 @@ def main():
             total = Email.select().count()
             classified = Email.select().where(Email.is_classified == True).count()
             console.print(f"📊 Total Emails: [bold]{total}[/] | Classified: [green]{classified}[/]")
-        except:
-            console.print("DB error.")
+        except Exception as e:
+            logger.error(f"DB error when fetching stats: {e}")
+            console.print("[red]DB error. See logs for details.[/]")
 
         console.print("\n[1] 📥 Sync Emails (Fetch from Gmail)")
         console.print("[w] 📅 Weekly Sync (2024 Batch Mode)")
@@ -196,5 +197,9 @@ if __name__ == "__main__":
         console.print("\n[bold red]Interrupted by user. Exiting...[/]")
         sys.exit(0)
     except Exception as e:
+        import traceback
+        logger.error(f"Unexpected error: {e}")
+        logger.error(traceback.format_exc())
         console.print(f"\n[bold red]Unexpected error:[/] {e}")
+        console.print("[dim]See logs for full traceback.[/]")
         sys.exit(1)
