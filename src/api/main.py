@@ -167,7 +167,17 @@ def add_rule(rule: Rule):
     rules[sender] = rule_info
     
     _save_rules_file(rules)
-    logger.info(f"Added/Updated rule for {sender}")
+    
+    # Sync to DB: Mark emails as 'Manual' for learning
+    try:
+        updated = (Email
+                   .update(category=rule.category, rule_source='Manual', is_classified=True)
+                   .where(Email.sender == sender)
+                   .execute())
+        logger.info(f"Added/Updated rule for {sender}. Sync'd {updated} emails as 'Manual' in DB.")
+    except Exception as e:
+        logger.error(f"Failed to sync manual rule to DB: {e}")
+
     return {"status": "success"}
 
 @app.delete("/api/rules/{sender}")

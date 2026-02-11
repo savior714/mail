@@ -12,7 +12,7 @@ class AppConfig:
         "💰_Finance": "Strictly banking statements, credit card monthly bills, and official financial reports.",
         "🛒_Shopping_Checkout": "Order confirmations, payment results (Naver Pay/Kakao Pay checkout), delivery tracking, and receipts.",
         "🛒_Shopping_Promo": "Shopping ads, discount coupons, sale alerts, and promotional newsletters.",
-        "🏥_Medical_Work": "Hospital notices, clinical data, pharmaceutical journals, and medical education.",
+        "🏥_Medical_Work": "Hospital notices, clinical data, pharmaceutical journals, medical education, and professional medical newsletters (의료 전문 뉴스레터/의협신문).",
         "💻_Dev_Tech": "GitHub, AWS, technical tools, API notices, and developer newsletters.",
         "🚗_Car_Life": "Car maintenance, inspection reports, parking updates, Hi-pass, and vehicle services.",
         "🏢_Notice_Privacy": "Privacy policy updates, personal data usage notices, and legal terms of service changes.",
@@ -37,7 +37,10 @@ class AppConfig:
             r"docker", r"kubernetes", r"\bapi\b", r"dev", r"코드리뷰", r"pull request", r"cursor"
         ],
         "🏥_Medical_Work": [
-            r"medscape", r"hira", r"심평원", r"hospital", r"clinic", r"medical", r"학회", r"제약", r"환자", r"임상", r"clinical", r"therapy"
+            r"medscape", r"hira", r"심평원", r"hospital", r"clinic", r"medical", 
+            r"의협", r"의사협회", r"의사", r"간호사", r"대한의사", r"병원", r"보건", r"의료",
+            r"의학", r"약사", r"진료", r"처방", r"검진",
+            r"학회", r"제약", r"환자", r"임상", r"clinical", r"therapy"
         ],
         "🚗_Car_Life": [
             r"bmw", r"hyundai", r"kia", r"benz", r"audi", r"genesis", r"차량", r"자동차", r"점검", r"정비", r"주차", r"하이패스", r"교통", r"내차"
