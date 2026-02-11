@@ -11,6 +11,8 @@ from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
 from rich.progress import Progress
+from rich.logging import RichHandler
+import logging
 
 from src.models import init_db, Email, fn
 from src.services.syncer import EmailSyncer
@@ -28,6 +30,15 @@ def main():
     args = parser.parse_args()
 
     init_db()
+    
+    # Setup logging for CLI
+    logging.basicConfig(
+        level="INFO", 
+        format="%(message)s", 
+        datefmt="[%X]", 
+        handlers=[RichHandler(console=console, rich_tracebacks=True)]
+    )
+
     syncer = EmailSyncer()
     
     if args.year:

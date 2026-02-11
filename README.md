@@ -1,19 +1,20 @@
-# Gmail-AI-Archivist (Production Readiness)
+# Gmail-AI-Archivist (Pencil Edition)
 
-A high-performance personal email archivist that organizes years of Gmail data using a "Local-First AI Synthesis" approach. 
+A high-performance personal email archivist that organizes years of Gmail data using a "Local-First AI Synthesis" approach. Now featuring a unique **Hand-Drawn / Sketch** web interface.
 
 ## 🚀 Key Features
-- **Local-First Architecture**: Syncs metadata to SQLite for ultra-fast local processing without API bottleneck.
-- **AI Rule Synthesis**: Uses Gemini 1.5 Flash to classify *Senders* once, creating a persistent `rules.json` that organizes millions of emails.
-- **Production Scale-up**: Process data in yearly batches (e.g., `--year 2024`) to handle massive mailboxes safely.
-- **Safety Rollback Tags**: Every cloud operation is tagged with `History/Batch_YYYYMMDD` for easy identification and revert.
-- **Storage Optimizer**: Automatically flags large emails (>= 5MB) in Shopping/Promo categories as `⚠️_Big_Trash`.
-- **Manual Audit Mode**: Edit `rules.json` to override AI decisions; your manual edits are **preserved** forever.
+- **Modern Web Interface**: Decoupled React (Vite) frontend with a beautiful, hand-drawn "Pencil" aesthetic.
+- **FastAPI Backend**: Robust Python API exposing core email organization logic.
+- **Tailwind v4 Powered**: Utilizing the latest CSS engine for high-performance rendering.
+- **Local-First Architecture**: Syncs metadata to SQLite for ultra-fast local processing.
+- **AI Rule Synthesis**: Uses Gemini 1.5 Flash to classify senders and create persistent rules.
+- **Storage Optimizer**: Automatically flags large emails (>= 5MB) as `⚠️_Big_Trash`.
 
 ## 🛠️ Setup
 
 ### 1. Prerequisites
 - Python 3.10+
+- Node.js 18+
 - Google Cloud Project with **Gmail API** enabled.
 - Google AI Studio API Key (Gemini).
 
@@ -21,36 +22,31 @@ A high-performance personal email archivist that organizes years of Gmail data u
 1.  Place your OAuth `credentials.json` in the project root.
 2.  Set `GOOGLE_API_KEY` in your `.env` file.
 
-### 3. Installation
+### 3. Quick Start (Windows)
+Double-click `start_app.bat` to launch both Backend and Frontend simultaneously.
+
+### 4. Manual Installation
+**Backend**:
 ```bash
 pip install -r requirements.txt
+uvicorn src.api.main:app --port 8000 --reload
 ```
 
-## 📖 Usage Flow
-
-### Step 1: Sync (Local First)
-Sync a specific year to your local database:
+**Frontend**:
 ```bash
-python src/main_local.py --year 2024
+cd frontend
+npm install
+npm run dev
 ```
-
-### Step 2: AI Audit
-Generate classification rules for all senders:
-- Run **[2] Generate Rules** in the TUI.
-- Open `rules.json` and manually audit/edit categories.
-
-### Step 3: Cloud Apply
-Push your audited classifications back to Gmail:
-- Run **[4] Cloud Sync** in the TUI.
-- Watch as labels like `Archived/💰_Finance` are applied via high-speed batch requests.
 
 ## 🛠️ Project Structure
-- **`src/main.py`**: Primary Production TUI entry point.
-- **`scripts/`**: Utility scripts (model listing, etc.).
-- **`tests/`**: Unit and integration tests.
-- **`archive/`**: Legacy code and dry-run versions.
-- **`antigravity-awesome-skills/`**: Curated AI skills library (Replacing legacy `skills/`).
+- **`src/api/`**: FastAPI implementation.
+- **`src/services/`**: Core business logic (Syncer, Rule Generator, Applier).
+- **`frontend/`**: React + Vite + Tailwind v4 web application.
+- **`docs/`**: Detailed documentation and architecture guides.
+- **`legacy_ui/`**: Archived Flet TUI/GUI implementation.
 
 ## 📁 Documentation
-- [Architecture Guide](docs/ARCHITECTURE.md): Deep dive into the Synthesis pattern.
-- [Usage Guide](docs/USAGE.md): Detailed CLI instructions.
+- [Architecture Guide](docs/ARCHITECTURE.md): Web architecture and Synthesis pattern.
+- [Dev History](docs/DEV_HISTORY.md): Evolution from TUI to Sketchy Web UI.
+- [Next Steps](docs/NEXT_STEPS.md): Future roadmap.

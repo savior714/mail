@@ -9,3 +9,10 @@ __pycache__/
 .pytest_cache/
 *.pyc
 reports/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
+frontend/build_output.log
+frontend/.env

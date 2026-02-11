@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Optional
+import logging
 from tqdm import tqdm
 from peewee import IntegrityError, fn
 import email.utils
@@ -10,6 +11,7 @@ from src.models import Email, db
 
 class EmailSyncer:
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self.gmail = GmailClient()
 
     def sync(self, limit: Optional[int] = 200, year: Optional[int] = None, after: Optional[str] = None, before: Optional[str] = None):
@@ -21,7 +23,9 @@ class EmailSyncer:
         else:
             query = None
         
-        print(f"Syncing last {limit} emails{' for range ' + after + ' to ' + before if after else (' for year ' + str(year) if year else '')}...")
+        query = None
+        
+        self.logger.info(f"Syncing last {limit} emails{' for range ' + after + ' to ' + before if after else (' for year ' + str(year) if year else '')}...")
         
         # Authenticate first
         self.gmail.authenticate()
@@ -57,7 +61,7 @@ class EmailSyncer:
                     # Already exists
                     pass
         
-        print(f"Sync complete. New emails: {new_count}")
+        self.logger.info(f"Sync complete. New emails: {new_count}")
 
     def get_top_senders(self, limit: int = 50) -> List[Dict[str, Any]]:
         """Return top senders by frequency."""

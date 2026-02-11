@@ -1,29 +1,25 @@
 # Project Context Snapshot
 
 ## 1. Project Identity
-- **Name**: Gmail-AI-Archivist
-- **Phase**: **Production Ready** (v1.0)
-- **Current Goal**: Enable user to organize 10+ years of emails safely and efficiently.
+- **Name**: Gmail-AI-Archivist (Pencil Edition)
+- **Phase**: **Production Web v1.2**
+- **Current Goal**: Maintenance and expansion of the sketchy web ecosystem.
 
-## 2. Key Accomplishments (2026-02-10~11)
-- **Repo Setup**: Initialized Git, linked to `savior714/mail`, added `skills` submodule.
-- **Migration**: Switched to Google Gemini Flash (`gemini-flash-latest`).
-- **Arch Pivot**: Adopted "Local-First AI Archivist" strategy (Sync -> SQLite -> AI Rule Gen -> Local Apply).
-- **Implementation**: Created `src/main.py` (Unified TUI), `Email` model (`peewee`), and rule synthesis logic.
-- **Organization**: Reorganized project into `scripts/`, `tests/`, and `archive/` directories.
-- **Skills**: Replaced local `skills/` with `antigravity-awesome-skills` repository for enhanced capabilities.
-- **Automation**: Implemented "Monthly Full Auto Pipeline" ([a] option).
-- **Optimization**: Enabled unlimited sender analysis in `RuleGenerator` and pagination support in `GmailClient`.
-- **Simplification**: Removed `History/Batch` tags for cleaner Gmail organization; retained `⚠️_Big_Trash` flagging.
-- **Documentation**: Fully refactored `README.md`, `ARCHITECTURE.md`, and `USAGE.md` for production.
+## 2. Key Accomplishments (2026-02-11)
+- **Web Migration**: Successfully pivoted from Flet to FastAPI + React.
+- **Architecture**: Established a decoupled API-driven architecture.
+- **Design Overhaul**: Applied a unique "Hand-Drawn" pencil aesthetic.
+- **Styles**: Migrated to Tailwind CSS v4 (Zero-Config).
+- **Navigation**: Integrated React Router for multi-page dashboard.
+- **Unified Startup**: Created one-click startup scripts for dual-service operation.
 
 ## 3. Tech Stack State
-- **Python**: 3.10+
-- **Database**: SQLite3 (via `peewee` ORM)
-- **TUI**: `rich` (Console UI + Progress bars)
-- **LLM**: Google Gemini API (`google-generativeai`)
-- **API**: Gmail API (`google-api-python-client`) with `modify` scope.
+- **Backend**: Python 3.10+, FastAPI, Uvicorn, Peewee (SQLite).
+- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS v4.
+- **AI**: Google Gemini API (`gemini-1.5-flash`).
+- **Icons**: Lucide React.
+- **Charts**: Recharts.
 
 ## 4. Current State
-- **Stability**: Verified E2E flow (Sync -> AI Audit -> Cloud Apply).
-- **Privacy**: `.gitignore` configured to protect `emails.db`, `token.json`, and `.env`.
+- **Stability**: High. Build and API flows verified.
+- **Next Focus**: Real-time logging (WebSockets) and Settings persistence.

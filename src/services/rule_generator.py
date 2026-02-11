@@ -2,6 +2,7 @@ import json
 import os
 import time
 import datetime
+import logging
 from typing import List, Dict, Any
 import google.generativeai as genai
 from tqdm import tqdm
@@ -11,14 +12,13 @@ from src.models import Email, db
 from src.config import AppConfig
 
 class RuleGenerator:
+
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self.api_key = os.getenv("GOOGLE_API_KEY")
         if self.api_key:
             genai.configure(api_key=self.api_key)
             self.model = genai.GenerativeModel('gemini-flash-latest')
-        else:
-            print("WARNING: GOOGLE_API_KEY missing.")
-            self.model = None
 
     def generate_rules(self, top_n: Optional[int] = 200) -> Dict[str, Any]:
         """
@@ -34,7 +34,7 @@ class RuleGenerator:
                 with open("rules.json", "r", encoding="utf-8") as f:
                     existing_rules = json.load(f)
             except Exception as e:
-                print(f"Error loading rules.json: {e}")
+                self.logger.error(f"Error loading rules.json: {e}")
 
         # 1. Get Senders with metadata
         query = (Email
@@ -53,7 +53,7 @@ class RuleGenerator:
         } for row in query if row.sender}
         
         if not db_senders:
-            print("No senders found in DB.")
+            self.logger.info("No senders found in DB.")
             return {}
 
         # Identify senders that need AI classification (not in existing_rules or marked as 'AI' and we want to refresh)
@@ -84,7 +84,7 @@ class RuleGenerator:
                 }
 
         if new_senders:
-            print(f"Asking AI to classify {len(new_senders)} NEW unique senders...")
+            self.logger.info(f"Asking AI to classify {len(new_senders)} NEW unique senders...")
             ai_results = self._call_ai_batch(new_senders)
             
             for sender, category in ai_results.items():
@@ -96,7 +96,7 @@ class RuleGenerator:
         with open("rules.json", "w", encoding="utf-8") as f:
             json.dump(final_rules, f, indent=4, ensure_ascii=False)
             
-        print(f"Rules updated in rules.json ({len(final_rules)} items).")
+        self.logger.info(f"Rules updated in rules.json ({len(final_rules)} items).")
         return final_rules
 
     def _call_ai_batch(self, senders: List[str]) -> Dict[str, str]:
@@ -130,19 +130,20 @@ class RuleGenerator:
             )
             return json.loads(response.text)
         except Exception as e:
-            print(f"AI Error: {e}")
+
+            self.logger.error(f"AI Error: {e}")
             return {}
 
     def apply_rules(self):
         """Load rules.json and update DB."""
         if not os.path.exists("rules.json"):
-            print("rules.json not found.")
+            self.logger.warning("rules.json not found.")
             return
 
         with open("rules.json", "r", encoding="utf-8") as f:
             rules = json.load(f)
             
-        print("Applying rules to DB...")
+        self.logger.info("Applying rules to DB...")
         with db.atomic():
             for sender, info in tqdm(rules.items(), desc="Updating DB"):
                 category = info.get("category", "Unclassified")
@@ -152,4 +153,4 @@ class RuleGenerator:
                  .where(Email.sender == sender)
                  .execute())
         
-        print("Rules applied!")
+        self.logger.info("Rules applied!")
