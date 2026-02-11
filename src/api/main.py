@@ -172,6 +172,21 @@ def add_rule(rule: Rule):
         key = rule.sender
         rule_info = rule.dict(exclude={"sender"})
     
+    # Check for duplicates
+    if key in rules:
+        existing_rule = rules[key]
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Rule already exists",
+                "existing_rule": {
+                    "key": key,
+                    "category": existing_rule.get("category"),
+                    "rule_type": rule_type
+                }
+            }
+        )
+    
     rules[key] = rule_info
     
     _save_rules_file(rules)
@@ -196,20 +211,23 @@ def add_rule(rule: Rule):
 
     return {"status": "success"}
 
-@app.delete("/api/rules/{sender}")
-def delete_rule(sender: str):
+@app.delete("/api/rules/{rule_key:path}")
+def delete_rule(rule_key: str):
+    """Delete a rule by key (sender or keyword:xxx)"""
     rules = _load_rules()
     if isinstance(rules, list):
-        new_rules = [r for r in rules if r.get('sender') != sender]
+        # Old list format
+        new_rules = [r for r in rules if r.get('sender') != rule_key]
         _save_rules_file(new_rules)
     else:
-        if sender in rules:
-            del rules[sender]
+        # Dict format - handle both sender and keyword rules
+        if rule_key in rules:
+            del rules[rule_key]
             _save_rules_file(rules)
+            logger.info(f"Deleted rule: {rule_key}")
         else:
             raise HTTPException(status_code=404, detail="Rule not found")
-            
-    logger.info(f"Deleted rule for {sender}")
+    
     return {"status": "success"}
 
 # --- Endpoints: Pipeline ---

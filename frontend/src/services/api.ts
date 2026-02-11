@@ -49,8 +49,10 @@ export const addRule = async (rule: Rule): Promise<void> => {
     await api.post('/rules', rule);
 };
 
-export const deleteRule = async (sender: string): Promise<void> => {
-    await api.delete(`/rules/${sender}`);
+export const deleteRule = async (ruleKey: string): Promise<void> => {
+    // Encode the rule key to handle special characters and 'keyword:' prefix
+    const encodedKey = encodeURIComponent(ruleKey);
+    await api.delete(`/rules/${encodedKey}`);
 };
 
 export type PipelineActionType = 'sync' | 'auto' | 'rules' | 'classify' | 'archive';
