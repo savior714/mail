@@ -47,8 +47,36 @@ const Rules: React.FC = () => {
             setNewKeyword('');
             setShowAddForm(false);
             fetchRules();
-        } catch (error) {
-            alert("Failed to add rule (maybe duplicate?)");
+        } catch (error: any) {
+            // Handle duplicate rule error (409 Conflict)
+            if (error.response?.status === 409) {
+                const existingRule = error.response.data.detail.existing_rule;
+                const ruleKey = ruleType === 'sender' ? newSender : newKeyword;
+                const confirmed = confirm(
+                    `Rule for "${ruleKey}" already exists (Category: ${existingRule.category}).\n\nReplace with new category "${newCategory}"?`
+                );
+
+                if (confirmed) {
+                    // Delete old rule and add new one
+                    try {
+                        await deleteRule(existingRule.key);
+                        const ruleData: Rule = {
+                            category: newCategory,
+                            rule_type: ruleType,
+                            ...(ruleType === 'sender' ? { sender: newSender } : { keyword: newKeyword })
+                        };
+                        await addRule(ruleData);
+                        setNewSender('');
+                        setNewKeyword('');
+                        setShowAddForm(false);
+                        fetchRules();
+                    } catch (replaceError) {
+                        alert("Failed to replace rule");
+                    }
+                }
+            } else {
+                alert("Failed to add rule");
+            }
         }
     };
 
