@@ -6,8 +6,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from concurrent.futures import ThreadPoolExecutor
-from tenacity import retry, wait_exponential, stop_after_attempt
+from googleapiclient.http import BatchHttpRequest
 import threading
 
 from src.utils.logger import setup_logger
@@ -164,38 +163,50 @@ class GmailClient:
                 if not messages:
                     break
 
-                logger.info("Fetching details for %d messages in parallel...", len(messages))
+                logger.info("Fetching details for %d messages using batch request...", len(messages))
 
-                def fetch_message_detail(message_id):
-                    service = self._get_service()
-                    @retry(wait=wait_exponential(multiplier=1, min=2, max=10), stop=stop_after_attempt(3))
-                    def _do_fetch():
-                        return service.users().messages().get(userId='me', id=message_id, format='metadata').execute()
-                    
-                    try:
-                        msg = _do_fetch()
-                        headers = msg.get('payload', {}).get('headers', [])
-                        subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), "(No Subject)")
-                        sender = next((h['value'] for h in headers if h['name'].lower() == 'from'), "(Unknown Sender)")
-                        date_str = next((h['value'] for h in headers if h['name'].lower() == 'date'), None)
-                        snippet = msg.get('snippet', '')
-
-                        return {
-                            'id': message_id,
-                            'snippet': snippet,
-                            'sender': sender,
-                            'subject': subject,
-                            'date': date_str,
-                            'sizeEstimate': msg.get('sizeEstimate', 0)
-                        }
-                    except Exception as e:
-                        logger.error(f"Error fetching message {message_id}: {e}")
-                        return None
-
-                with ThreadPoolExecutor(max_workers=10) as executor:
-                    detail_results = list(executor.map(fetch_message_detail, [m['id'] for m in messages]))
+                # Use batch request instead of ThreadPoolExecutor to reduce API calls
+                batch_results = []
                 
-                results.extend([r for r in detail_results if r])
+                def callback(request_id, response, exception):
+                    """Callback for batch request"""
+                    if exception:
+                        logger.error(f"Batch request error for {request_id}: {exception}")
+                    else:
+                        try:
+                            headers = response.get('payload', {}).get('headers', [])
+                            subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), "(No Subject)")
+                            sender = next((h['value'] for h in headers if h['name'].lower() == 'from'), "(Unknown Sender)")
+                            date_str = next((h['value'] for h in headers if h['name'].lower() == 'date'), None)
+                            snippet = response.get('snippet', '')
+
+                            batch_results.append({
+                                'id': response['id'],
+                                'snippet': snippet,
+                                'sender': sender,
+                                'subject': subject,
+                                'date': date_str,
+                                'sizeEstimate': response.get('sizeEstimate', 0)
+                            })
+                        except Exception as e:
+                            logger.error(f"Error parsing batch response: {e}")
+
+                # Create batch request
+                batch = self.service.new_batch_http_request(callback=callback)
+                for message in messages:
+                    batch.add(self.service.users().messages().get(
+                        userId='me', 
+                        id=message['id'], 
+                        format='metadata'
+                    ))
+                
+                # Execute batch request
+                try:
+                    batch.execute()
+                except HttpError as error:
+                    logger.error(f"Batch execution error: {error}")
+                
+                results.extend(batch_results)
                 
                 if limit and len(results) >= limit:
                     results = results[:limit]

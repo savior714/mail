@@ -49,7 +49,11 @@ class AppConfig:
             r"verify", r"code", r"auth", r"password", r"2fa", r"signin", r"인증", r"비밀번호", r"OTP", r"회원가입", r"sign-up"
         ],
         "🛒_Shopping_Promo": [
-            r"promo", r"sale", r"advertisement", r"광고", r"쿠폰", r"혜택", r"할인", r"특가", r"이벤트", r"G마켓", r"11번가", r"옥션", r"티몬", r"위메프"
+            r"coupang", r"쿠팡", r"gmarket", r"G마켓", r"11st", r"11번가", 
+            r"auction", r"옥션", r"tmon", r"티몬", r"wemakeprice", r"위메프",
+            r"navershop", r"네이버쇼핑", r"ssg", r"신세계",
+            r"promo", r"sale", r"advertisement", r"광고", r"쿠폰", r"혜택", 
+            r"할인", r"특가", r"이벤트", r"세일", r"쇼핑"
         ],
         "🏢_Notice_Privacy": [
             r"개인정보", r"이용내역", r"통지", r"수신동의", r"개정", r"이용약관", r"약관", r"가격 변경", r"동의", r"변경", r"privacy policy", r"terms of service"

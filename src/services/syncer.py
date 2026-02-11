@@ -8,6 +8,7 @@ import datetime
 
 from src.services.gmail_client import GmailClient
 from src.models import Email, db
+from src.utils.logger import clean_snippet
 
 class EmailSyncer:
     def __init__(self):
@@ -49,11 +50,15 @@ class EmailSyncer:
                     except Exception:
                         date_obj = datetime.datetime.now()
 
+                    # Clean snippet for better LLM processing
+                    raw_snippet = email_data.get('snippet', '')
+                    cleaned_snippet = clean_snippet(raw_snippet)
+
                     Email.create(
                         id=email_data['id'],
                         sender=sender,
                         subject=email_data.get('subject', ''),
-                        snippet=email_data.get('snippet', ''),
+                        snippet=cleaned_snippet,
                         date=date_obj,
                         size_estimate=email_data.get('sizeEstimate', 0)
                     )

@@ -79,48 +79,65 @@ class EmailClassifier:
         return None
 
     def _call_llm(self, sender: str, subject: str, snippet: str) -> Optional[ClassificationResult]:
-        """Layer 2: LLM Classification."""
+        """Layer 2: LLM Classification with structured output."""
         # Rate Limit for Free Tier: 15 RPM = 1 request per 4 seconds
         time.sleep(4)
         
         try:
-            prompt = f"""
-            You are an intelligent email classifier. Classify the following email into one of these categories:
-            {json.dumps(AppConfig.CATEGORIES, indent=2, ensure_ascii=False)}
+            # Build category descriptions for prompt
+            category_descriptions = "\n".join([
+                f"- {key}: {desc}" 
+                for key, desc in AppConfig.CATEGORIES.items()
+            ])
+            
+            prompt = f"""You are an intelligent email classifier. Classify the following email into one of these categories:
 
-            Email Details:
-            - Sender: {sender}
-            - Subject: {subject}
-            - Snippet: {snippet}
+{category_descriptions}
 
-            Return ONLY a valid JSON object matching this schema:
-            {{
-                "category": "One of the category keys",
-                "confidence": 0.0 to 1.0,
-                "reasoning": "Brief explanation"
-            }}
-            """
+Email Details:
+- Sender: {sender}
+- Subject: {subject}
+- Snippet: {snippet}
 
+Classify this email and provide your reasoning."""
+
+            # Use Gemini's response_schema for structured output (100% schema compliance)
             response = self.model.generate_content(
                 prompt,
-                generation_config={"response_mime_type": "application/json"}
+                generation_config=genai.GenerationConfig(
+                    response_mime_type="application/json",
+                    response_schema={
+                        "type": "object",
+                        "properties": {
+                            "category": {
+                                "type": "string",
+                                "enum": list(AppConfig.CATEGORIES.keys())
+                            },
+                            "confidence": {
+                                "type": "number",
+                                "minimum": 0.0,
+                                "maximum": 1.0
+                            },
+                            "reasoning": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["category", "confidence", "reasoning"]
+                    }
+                )
             )
 
             content = response.text
             if not content:
-                print(f"Empty response from LLM for email: {subject}")
+                logger.error(f"Empty response from LLM for email: {subject}")
                 return None
             
             data = json.loads(content)
-            # Validate category
-            category = data.get("category")
-            if category not in AppConfig.CATEGORIES:
-                # Try to find partial match or fallback
-                print(f"Invalid category returned: {category}")
-                return None
-
             return ClassificationResult(**data)
 
+        except json.JSONDecodeError as e:
+            logger.error("JSON parsing error: %s | Response: %s", e, content if 'content' in locals() else 'N/A')
+            return None
         except Exception as e:
             logger.error("LLM classification failed: %s", e)
             return None
