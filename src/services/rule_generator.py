@@ -18,11 +18,46 @@ class RuleGenerator:
         self.logger = logging.getLogger(__name__)
         self.api_key = os.getenv("GOOGLE_API_KEY")
         self.model = None
+        self.quota_file = "api_usage.json"
         if self.api_key:
             genai.configure(api_key=self.api_key)
             self.model = genai.GenerativeModel('gemini-flash-latest')
         else:
             self.logger.warning("GOOGLE_API_KEY not found. AI classification will be skipped.")
+    
+    def _load_quota(self) -> Dict[str, Any]:
+        """Load daily API usage quota."""
+        if not os.path.exists(self.quota_file):
+            return {"date": datetime.datetime.now().strftime("%Y-%m-%d"), "calls": 0, "limit": 20}
+        try:
+            with open(self.quota_file, "r") as f:
+                data = json.load(f)
+                today = datetime.datetime.now().strftime("%Y-%m-%d")
+                # Reset if new day
+                if data.get("date") != today:
+                    data = {"date": today, "calls": 0, "limit": 20}
+                return data
+        except:
+            return {"date": datetime.datetime.now().strftime("%Y-%m-%d"), "calls": 0, "limit": 20}
+    
+    def _save_quota(self, quota: Dict[str, Any]):
+        """Save updated quota."""
+        with open(self.quota_file, "w") as f:
+            json.dump(quota, f, indent=2)
+    
+    def _check_quota(self) -> bool:
+        """Check if we have quota remaining."""
+        quota = self._load_quota()
+        return quota["calls"] < quota["limit"]
+    
+    def _increment_quota(self):
+        """Increment API call counter."""
+        quota = self._load_quota()
+        quota["calls"] += 1
+        self._save_quota(quota)
+        remaining = quota["limit"] - quota["calls"]
+        if remaining <= 2:
+            self.logger.warning(f"⚠️ API Quota Alert: Only {remaining} calls remaining today!")
 
     def generate_rules(self, top_n: Optional[int] = 200, learn: bool = True) -> Dict[str, Any]:
         """
@@ -143,11 +178,20 @@ class RuleGenerator:
                 final_rules[sender] = {**matched_rule, **meta}
             elif sender in existing_rules:
                 old_rule = existing_rules[sender]
+                # Reuse existing classification if it's valid (not Unclassified)
                 if isinstance(old_rule, str):
-                    final_rules[sender] = {"category": old_rule, "source": "Manual_Migrated"}
+                    final_rules[sender] = {"category": old_rule, "source": "Manual_Migrated", **meta}
                 else:
-                    final_rules[sender] = old_rule
-                final_rules[sender].update(meta)
+                    category = old_rule.get("category", "Unclassified")
+                    source = old_rule.get("source", "Unknown")
+                    
+                    # Only re-classify if previously unclassified or quota-limited
+                    if category == "Unclassified" or source in ["Quota_Exceeded", "AI_PENDING"]:
+                        final_rules[sender] = {"category": "Unclassified", "source": "AI_PENDING", **meta}
+                    else:
+                        # Reuse existing valid classification (AI_Generated, Manual, Hard_Rule, Learned)
+                        final_rules[sender] = {**old_rule, **meta}
+                        self.logger.debug(f"Reusing cached classification for {sender}: {category}")
             else:
                 final_rules[sender] = {"category": "Unclassified", "source": "AI_PENDING", **meta}
 
@@ -155,8 +199,21 @@ class RuleGenerator:
         new_senders = [(s, m["subjects"]) for s, m in final_rules.items() if m.get("source") == "AI_PENDING"]
 
         if new_senders:
-            self.logger.info(f"🤖 Step 4: AI Classification - Requesting analysis for {len(new_senders)} new senders...")
-            ai_results = self._call_ai_batch(new_senders)
+            # Check quota before making AI calls
+            if not self._check_quota():
+                quota = self._load_quota()
+                self.logger.warning(f"⚠️ Daily API quota exhausted ({quota['calls']}/{quota['limit']}). Marking {len(new_senders)} senders as 'Quota_Exceeded'.")
+                # Mark all pending senders as quota-exceeded
+                for sender, _ in new_senders:
+                    if sender in final_rules:
+                        final_rules[sender].update({
+                            "category": "Unclassified", 
+                            "source": "Quota_Exceeded",
+                            "reasoning": f"API quota exhausted ({quota['calls']}/{quota['limit']}). Retry tomorrow or upgrade plan."
+                        })
+            else:
+                self.logger.info(f"🤖 Step 4: AI Classification - Requesting analysis for {len(new_senders)} new senders...")
+                ai_results = self._call_ai_batch(new_senders)
             
             if not isinstance(ai_results, dict):
                 self.logger.error(f"❌ AI returned unexpected format: {type(ai_results)}")
@@ -299,6 +356,10 @@ class RuleGenerator:
                     prompt,
                     generation_config={"response_mime_type": "application/json"}
                 )
+                
+                # Increment quota after successful API call
+                self._increment_quota()
+                
                 raw_res = json.loads(response.text)
                 
                 # Robustness: AI sometimes returns a list of objects instead of a dict
